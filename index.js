@@ -33,7 +33,7 @@ app.get("/sse1", (req, res) => {
     const message = count % 2 === 0
       ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
       : `Event #${count} at ${new Date().toISOString()}`;
-    res.write(`${message}\n\n`);
+    res.write(`${message}\n`);
   }, 1000);
 
   req.on("close", () => clearInterval(interval));
