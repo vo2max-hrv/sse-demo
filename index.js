@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000; // Railway injects PORT automatically
+const PORT = process.env.PORT || 3000;
 
-// Serve a simple HTML client
 app.get("/", (req, res) => {
   res.send(`<!DOCTYPE html>
 <html>
@@ -11,7 +10,7 @@ app.get("/", (req, res) => {
   <h2>Live Events:</h2>
   <ul id="events"></ul>
   <script>
-    const es = new EventSource("/sse");
+    const es = new EventSource("/sse1");
     es.onmessage = (e) => {
       const li = document.createElement("li");
       li.textContent = e.data;
@@ -22,8 +21,7 @@ app.get("/", (req, res) => {
 </html>`);
 });
 
-// SSE endpoint
-app.get("/sse", (req, res) => {
+app.get("/sse1", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
@@ -33,18 +31,32 @@ app.get("/sse", (req, res) => {
   const interval = setInterval(() => {
     count++;
     const message = count % 2 === 0
-      ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*\n"
-      : `SSE Event #${count} at ${new Date().toISOString()}\n`;
-    //res.write(`data: Event #${count} at ${new Date().toISOString()}\n\n`);
-    //res.write(`data: X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*\n`);
-    res.write(`${message}\n`);
+      ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
+      : `Event #${count} at ${new Date().toISOString()}`;
+    res.write(`${message}\n\n`);
   }, 1000);
 
-  // Clean up when client disconnects
   req.on("close", () => clearInterval(interval));
 });
 
-// IMPORTANT: bind to 0.0.0.0 for Railway
+app.get("/sse2", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  let count = 0;
+  const interval = setInterval(() => {
+    count++;
+    const message = count % 2 !== 0
+      ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
+      : `Event #${count} at ${new Date().toISOString()}`;
+    res.write(`${message}\n`);
+  }, 1000);
+
+  req.on("close", () => clearInterval(interval));
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
