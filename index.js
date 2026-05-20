@@ -66,7 +66,7 @@ app.get("/sse3", (req, res) => {
   let count = 0;
   const interval = setInterval(() => {
     count++;
-    const message = count % 2 === 0
+    const message = count % 2 !== 0
       ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
       : `Event #${count} at ${new Date().toISOString()}`;
     res.write(`data: ${message}\n`);
