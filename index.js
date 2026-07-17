@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const MAX_EVENTS = 10;
 
 app.get("/", (req, res) => {
   res.send(`<!DOCTYPE html>
@@ -26,7 +27,8 @@ app.get("/sse1", (req, res) => {
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
-
+  
+ 
   let count = 0;
   const interval = setInterval(() => {
     count++;
@@ -34,6 +36,12 @@ app.get("/sse1", (req, res) => {
       ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
       : `Event #${count} at ${new Date().toISOString()}`;
     res.write(`${message}\n`);
+
+    if (count >= MAX_EVENTS) {
+      clearInterval(interval);
+      res.end();
+    }
+    
   }, 1000);
 
   req.on("close", () => clearInterval(interval));
@@ -52,6 +60,12 @@ app.get("/sse2", (req, res) => {
       ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
       : `Event #${count} at ${new Date().toISOString()}`;
     res.write(`${message}\n`);
+
+    if (count >= MAX_EVENTS) {
+      clearInterval(interval);
+      res.end();
+    }
+    
   }, 1000);
 
   req.on("close", () => clearInterval(interval));
