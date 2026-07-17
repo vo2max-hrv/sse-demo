@@ -80,7 +80,7 @@ app.get("/sse3", (req, res) => {
   let count = 0;
   const interval = setInterval(() => {
     count++;
-    const message = count % 2 !== 0
+    const message = count % 2 === 0
       ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
       : `event: sse-event\ - id: ${count} - data: ${new Date().toISOString()}`;
     res.write(`${message}\n`);
@@ -114,7 +114,7 @@ app.get("/sse4", (req, res) => {
       res.end();
     }
     
-  }, 100);
+  }, 1000);
 
   req.on("close", () => clearInterval(interval));
 });
