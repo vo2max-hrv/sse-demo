@@ -133,7 +133,7 @@ app.get("/sse5", (req, res) => {
       : `event: sse-event\ - id: ${count} - data: ${new Date().toISOString()}`;
     res.write(`${message}\n`);
 
-    if (count >= 200) {
+    if (count >= 220) {
       clearInterval(interval);
       res.end();
     }
