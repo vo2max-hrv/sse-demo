@@ -119,26 +119,27 @@ app.get("/sse4", (req, res) => {
   req.on("close", () => clearInterval(interval));
 });
 
-app.get("/sse7", (req, res) => {
+app.get("/sse5", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
-
+  
+ 
   let count = 0;
   const interval = setInterval(() => {
     count++;
     const message = count % 2 === 0
-      ? "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
-      : `event: sse-event\ - id: ${count} - data: ${new Date().toISOString()}`;
+      ? `event: sse-event\nid: ${count}\ndata: ${new Date().toISOString()}\n`;
+      : `event: sse-event\nid: ${count}\ndata: ${new Date().toISOString()}\n`;
     res.write(`${message}\n`);
 
-    if (count >= 220) {
+    if (count >= MAX_EVENTS) {
       clearInterval(interval);
       res.end();
     }
     
-  }, 1000);
+  }, 2000);
 
   req.on("close", () => clearInterval(interval));
 });
