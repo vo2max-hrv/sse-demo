@@ -119,7 +119,7 @@ app.get("/sse4", (req, res) => {
   req.on("close", () => clearInterval(interval));
 });
 
-app.get("/sse5", (req, res) => {
+app.get("/sse7", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
