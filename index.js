@@ -130,16 +130,16 @@ app.get("/sse5", (req, res) => {
   const interval = setInterval(() => {
     count++;
     const message = count % 2 === 0
-      ? `event: sse-event\nid: ${count}\ndata: ${new Date().toISOString()}\n`;
+      ? `event: sse-event\nid: ${count}\ndata: ${new Date().toISOString()}\n`
       : `event: sse-event\nid: ${count}\ndata: ${new Date().toISOString()}\n`;
     res.write(`${message}\n`);
 
-    if (count >= MAX_EVENTS) {
+    if (count >= 700) {
       clearInterval(interval);
       res.end();
     }
     
-  }, 2000);
+  }, 5000);
 
   req.on("close", () => clearInterval(interval));
 });
